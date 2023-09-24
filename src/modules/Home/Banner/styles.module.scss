@@ -1,0 +1,13 @@
+.carouselItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400;
+}
+
+.carouselImage {
+    width: 100%;
+    height: 600px;
+    margin-bottom: 10;
+}
