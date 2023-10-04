@@ -34,3 +34,15 @@ export async function getMovieDetails(movieId) {
     throw error.response.data.content;
   }
 }
+
+export async function addMovie(movie) {
+  try {
+    const response = await fetcher.post(
+      "/QuanLyPhim/ThemPhimUploadHinh",
+      movie
+    );
+    return response.data?.content;
+  } catch (error) {
+    throw error.response.data?.content;
+  }
+}

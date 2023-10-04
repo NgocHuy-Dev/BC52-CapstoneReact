@@ -15,3 +15,7 @@ src
   -apis/:
   -setup thư viện gọi API
   -setup các hàm gọi API
+
+  # Link Deploy:
+
+  https://bc-52-capstone-react.vercel.app/

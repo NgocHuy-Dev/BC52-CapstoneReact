@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Navigate } from "react-router-dom";
+import { Navigate, useSearchParams } from "react-router-dom";
 import { object, string } from "yup";
 import { signin } from "../../../../apis/userAPI";
 import { useUserContext } from "../../../../contexts/UserContext/UserContext";
@@ -19,6 +19,8 @@ const signinSchema = object({
 
 export default function Signin() {
   const { currentUser, handleSignin: onSigninSuccess } = useUserContext();
+
+  const [searchParams] = useSearchParams();
 
   const {
     register,
@@ -50,7 +52,8 @@ export default function Signin() {
 
   // currentUser khác null => user đã đăng nhập => điều hướng về Home
   if (currentUser) {
-    return <Navigate to="/" replace />;
+    const redirectTo = searchParams.get("redirectTo");
+    return <Navigate to={redirectTo || "/"} replace />;
   }
 
   return (

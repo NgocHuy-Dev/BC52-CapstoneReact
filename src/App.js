@@ -7,7 +7,8 @@ import Signup from "./modules/Auth/pages/Signup";
 import NotFound from "./components/NotFound";
 import MainLayout from "./layouts/MainLayout";
 import UserProvider from "./contexts/UserContext/UserContext";
-import ProtectedRoute from "./components/Routers/ProtectedRoute/ProtectedRoute";
+import ProtedtedRoute from "./routers/ProtectedRoute/ProtedtedRoute";
+import AdminMovie from "./modules/AdminMovie";
 
 function App() {
   return (
@@ -17,26 +18,26 @@ function App() {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
             <Route path="movies/:movieId" element={<Details />} />
-            {/* <Route
-              path="tickets/:showtimeId"
-              element={
-                <ProtectedRoute>
-                  <div>Ticket Pages</div>
-                </ProtectedRoute>
-              }
-            /> */}
 
-            <Route element={<ProtectedRoute />}>
+            <Route element={<ProtedtedRoute />}>
               <Route
                 path="tickets/:showtimeId"
-                element={<div>Ticet Pages</div>}
+                element={<div>Ticket Page</div>}
               />
             </Route>
-            {/* <Route path="tickets/:showtimeId" element={<Tickets />} /> */}
 
             <Route path="/sign-in" element={<Signin />} />
             <Route path="/sign-up" element={<Signup />} />
           </Route>
+
+          {/* Admin */}
+          {/* <Route element={<AdminProtectedRoute />}> */}
+          <Route path="/admin">
+            <Route path="movies" element={<AdminMovie />} />
+            {/* <Route path="users" element={<AdminUser />} /> */}
+            {/* <Route path="tickets" element={<AdminTicket />} /> */}
+          </Route>
+          {/* </Route> */}
 
           <Route path="*" element={<NotFound />} />
         </Routes>
