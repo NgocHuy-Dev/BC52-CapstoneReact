@@ -24,7 +24,7 @@ export default function Banner() {
     <>
       <Carousel>
         {banners.map((item) => (
-          <Paper className="carouselItem">
+          <Paper className="carouselItem" key={item.maBanner}>
             <img src={item.hinhAnh} className="carouselImage" />
           </Paper>
         ))}

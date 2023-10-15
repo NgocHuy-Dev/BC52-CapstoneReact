@@ -1,10 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
-import movieReducer from "./rexdux/reducers/showingReducer";
+// import { configureStore } from "@reduxjs/toolkit";
+// import movieReducer from "./rexdux/reducers/showingReducer";
 
-const store = configureStore({
-  reducer: {
-    movie: movieReducer,
-  },
-});
+// const store = configureStore({
+//   reducer: {
+//     movie: movieReducer,
+//   },
+// });
 
-export default store;
+// export default store;
