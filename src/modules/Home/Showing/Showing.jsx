@@ -10,50 +10,54 @@ import {
   CardContent,
   Typography,
   Button,
+  Modal,
+  Box,
+  Pagination,
 } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { grey, red } from "@mui/material/colors";
 import "./styles.css";
-import { set } from "react-hook-form";
+import ReactPlayer from "react-player";
 
 export default function Showing() {
-  // const { numberOfPage } = useQuery({
-  //   queryKey: ["page"],
-  //   queryFn: getPagesInf,
-  // });
+  //==== Modal ===
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  //==== Modal ===
 
-  // tạo mảng danh sách trang
-  // const pageList = Array.from(
-  //   { length: Math.ceil(numberOfPage) },
-  //   (_, index) => index + 1
-  // );
-
-  const [changePage, setChangePage] = useState(1);
-  const handleNextPage = () => {
-    setChangePage(changePage + 1);
-  };
-
-  const handleBackPage = () => {
-    if (changePage >= 2) {
-      setChangePage(changePage - 1);
-    }
+  const [page, setPage] = useState(1);
+  const handleChange = (event, value) => {
+    setPage(value);
   };
 
   const { data = [], isLoading } = useQuery({
-    queryKey: ["page", changePage],
-    queryFn: () => getPagesItem(changePage),
+    queryKey: ["page", page],
+    queryFn: () => getPagesItem(page),
   });
 
   // console.log("data", data);
+  const pageItem = data?.items || [];
+  console.log("pageItem", pageItem);
 
   const navigate = useNavigate();
   return (
     <Container maxWidth="lg">
       <Grid container spacing={3}>
-        {data.map((movie) => {
+        {pageItem.map((movie) => {
           return (
             <Grid item xs={3} key={movie.maPhim}>
               <Card className="card" sx={{ maxWidth: 345 }}>
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box className="modal">
+                    <ReactPlayer url={movie.trailer} controls={true} />
+                  </Box>
+                </Modal>
                 <div className="card-img">
                   <CardMedia
                     sx={{ height: 314 }}
@@ -62,6 +66,7 @@ export default function Showing() {
                   />
                   <div className="card-overlay">
                     <PlayCircleOutlineIcon
+                      onClick={handleOpen}
                       className="play-trailer-icon"
                       sx={{ fontSize: 70, color: grey[50] }}
                     />
@@ -92,11 +97,14 @@ export default function Showing() {
             </Grid>
           );
         })}
+        <div>
+          <Pagination
+            count={data.totalPages}
+            page={page}
+            onChange={handleChange}
+          />
+        </div>
       </Grid>
-      <div>
-        <button onClick={handleBackPage}>Back</button>
-        <button onClick={handleNextPage}>Next</button>
-      </div>
     </Container>
   );
 }

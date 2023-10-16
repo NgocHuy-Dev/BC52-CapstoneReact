@@ -1,30 +1,39 @@
 import React from "react";
-import AppBar from "@mui/material/AppBar";
+
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
+
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import { useUserContext } from "../../contexts/UserContext/UserContext";
+import { Avatar, Button, Grid, Paper } from "@mui/material";
+import { red } from "@mui/material/colors";
 
 export default function Header() {
   const { currentUser, handleSignout } = useUserContext();
   return (
-    <div>
-      {currentUser && (
-        <div>
-          <p>{currentUser.hoTen}</p>
-          <button onClick={handleSignout}>Đăng xuất</button>
-        </div>
-      )}
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Typography variant="h6" color="inherit" component="div">
-            Photos
+    <Box bgcolor={red}>
+      <Grid container>
+        <Grid item xs={4}>
+          <Avatar src="/public/icon.png" />
+        </Grid>
+        <Grid item xs={4}>
+          <Typography align="center">
+            <Button>Lịch chiếu</Button>
+            <Button>Cụm rạp</Button>
+            <Button>Tin Tức</Button>
           </Typography>
-          <div></div>
-        </AppBar>
-      </Box>
-    </div>
+        </Grid>
+        <Grid item xs={4}>
+          <Typography align="right">
+            {currentUser && (
+              <div>
+                <p>{currentUser.hoTen}</p>
+                <button onClick={handleSignout}>Đăng Xuất</button>
+              </div>
+            )}
+          </Typography>
+        </Grid>
+      </Grid>
+    </Box>
   );
 }

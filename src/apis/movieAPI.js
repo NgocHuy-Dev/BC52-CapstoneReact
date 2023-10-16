@@ -31,9 +31,9 @@ export async function getPagesItem(page) {
         soPhanTuTrenTrang: "8",
       },
     });
-    return response.data?.content.items;
+    return response.data?.content;
   } catch (error) {
-    throw error.response?.data.content.items;
+    throw error.response.data?.content;
   }
 }
 

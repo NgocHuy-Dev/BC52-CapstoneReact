@@ -37,13 +37,13 @@ export default function Cinema() {
     queryKey: ["cinemaCode", cinemaCode],
     queryFn: () => getCinemaSystem(cinemaCode),
   });
-  // console.log("cinemaSystemmmmmm:", cinemaSystem);
+  console.log("cinemaSystemmmmmm:", cinemaSystem);
 
   //================ lịch chiếu của cụm rạp
   const [cinemaId, setCinemaId] = useState("");
-  const handleChangeCinemaId = (value) => {
-    setCinemaId(value);
-  };
+  // const handleChangeCinemaId = (value) => {
+  //   setCinemaId(value);
+  // };
   // const { data: cinemaShowtimes } = useQuery({
   //   queryKey: ["cinemaCode", cinemaId],
   //   queryFn: () => getCinemaShowtimes(cinemaId),
@@ -91,7 +91,7 @@ export default function Cinema() {
           {cinemaSystem.map((item) => {
             return (
               <div key={item.maHeThongRap}>
-                <Box onClick={handleChangeCinemaId(item.maHeThongRap)}>
+                <Box>
                   <h3>{item.tenCumRap}</h3>
                   <a>{item.diaChi}</a>
                 </Box>
