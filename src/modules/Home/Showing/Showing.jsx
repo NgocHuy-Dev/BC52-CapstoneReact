@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { getMovies } from "../../../apis/movieAPI";
+import { getPagesInf, getPagesItem } from "../../../apis/movieAPI";
 import {
   Container,
   Grid,
@@ -10,36 +10,83 @@ import {
   CardContent,
   Typography,
   Button,
+  Modal,
+  Box,
+  Pagination,
 } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import { grey, red } from "@mui/material/colors";
+import "./styles.css";
+import ReactPlayer from "react-player";
 
 export default function Showing() {
+  //==== Modal ===
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  //==== Modal ===
+
+  const [page, setPage] = useState(1);
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+
   const { data = [], isLoading } = useQuery({
-    queryKey: ["movies"],
-    queryFn: getMovies,
+    queryKey: ["page", page],
+    queryFn: () => getPagesItem(page),
   });
 
-  const navigate = useNavigate();
+  // console.log("data", data);
+  const pageItem = data?.items || [];
+  console.log("pageItem", pageItem);
 
+  const navigate = useNavigate();
   return (
     <Container maxWidth="lg">
       <Grid container spacing={3}>
-        {data.map((movie) => {
+        {pageItem.map((movie) => {
           return (
-            <Grid item xs={3}>
-              <Card height="300" sx={{ maxWidth: 345 }}>
-                <CardMedia
-                  sx={{ height: 314 }}
-                  image={movie.hinhAnh}
-                  title={movie.tenPhim}
-                />
+            <Grid item xs={3} key={movie.maPhim}>
+              <Card className="card" sx={{ maxWidth: 345 }}>
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box className="modal">
+                    <ReactPlayer url={movie.trailer} controls={true} />
+                  </Box>
+                </Modal>
+                <div className="card-img">
+                  <CardMedia
+                    sx={{ height: 314 }}
+                    image={movie.hinhAnh}
+                    title={movie.tenPhim}
+                  />
+                  <div className="card-overlay">
+                    <PlayCircleOutlineIcon
+                      onClick={handleOpen}
+                      className="play-trailer-icon"
+                      sx={{ fontSize: 70, color: grey[50] }}
+                    />
+                    <Button
+                      className="button"
+                      variant="contained"
+                      sx={{ color: grey[50], backgroundColor: red[600] }}
+                      onClick={() => navigate(`/movies/${movie.maPhim}`)}
+                    >
+                      Mua vé
+                    </Button>
+                  </div>
+                </div>
 
-                <CardContent>
+                <CardContent className="card-text">
                   <Typography gutterBottom variant="h5" component="div">
                     {movie.tenPhim}
                   </Typography>
                   <Typography
-                    height={70}
+                    maxHeight={70}
                     variant="body2"
                     color="text.secondary"
                   >
@@ -47,23 +94,17 @@ export default function Showing() {
                   </Typography>
                 </CardContent>
               </Card>
-              <div className="CardOverlay">
-                <PlayCircleOutlineIcon className="play-trailer-icon" />
-                <Button>Mua vé</Button>
-              </div>
             </Grid>
           );
         })}
+        <div>
+          <Pagination
+            count={data.totalPages}
+            page={page}
+            onChange={handleChange}
+          />
+        </div>
       </Grid>
-      {/* <div className="d-flex justify-content-center">
-        {pages.map((page) => {
-          return (
-            <button key={page} onClick={() => {}}>
-              {page}
-            </button>
-          );
-        })}
-      </div> */}
     </Container>
   );
 }

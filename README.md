@@ -1,17 +1,1 @@
-# Cấu trúc project
-
-src
-
-- component/:
-  - Chứa các component được tái sử dụng ở nhiều nơi
-  - Các component này thường không gồm các logic của ứng dụng (call API, ..)
-    -VD: Button, card, input Header, footer, sidebar,....
-- modules/module-name/:
-  - Chứa các cpmponent cấu thành một page hoặc một chức năng cụ thể
-- layouts/:
-
-  - Chứa các component lyouts
-
-  -apis/:
-  -setup thư viện gọi API
-  -setup các hàm gọi API
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA1MiIsIkhldEhhblN0cmluZyI6IjI4LzAyLzIwMjQiLCJIZXRIYW5UaW1lIjoiMTcwOTA3ODQwMDAwMCIsIm5iZiI6MTY4MTE0NjAwMCwiZXhwIjoxNzA5MjI2MDAwfQ.GboZ7OZlrOvJ_T6lEZ9PfGJD8vygDn30BxaLgB43WbM

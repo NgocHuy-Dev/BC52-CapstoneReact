@@ -16,11 +16,39 @@ export async function getMovies() {
         maNhom: "GP01",
       },
     });
-    return response.data.content;
+    return response.data?.content;
   } catch (error) {
-    throw error.response.data.content;
+    throw error.response.data?.content;
   }
 }
+// lấy danh sách phân trang
+export async function getPagesItem(page) {
+  try {
+    const response = await fetcher.get("/QuanLyPhim/LayDanhSachPhimPhanTrang", {
+      params: {
+        maNhom: "GP01",
+        soTrang: page,
+        soPhanTuTrenTrang: "8",
+      },
+    });
+    return response.data?.content;
+  } catch (error) {
+    throw error.response.data?.content;
+  }
+}
+
+// export async function getPagesInf() {
+//   try {
+//     const response = await fetcher.get("/QuanLyPhim/LayDanhSachPhimPhanTrang", {
+//       params: {
+//         maNhom: "GP01",
+//       },
+//     });
+//     return response.data?.content.totalPages;
+//   } catch (error) {
+//     throw error.response?.data.content.totalPages;
+//   }
+// }
 
 export async function getMovieDetails(movieId) {
   try {
