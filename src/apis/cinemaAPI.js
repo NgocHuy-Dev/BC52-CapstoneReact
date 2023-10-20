@@ -69,10 +69,11 @@ export async function getCinemaShowtimes(cinemaId) {
       {
         params: {
           maHeThongRap: cinemaId,
+          maNhom: "GP01",
         },
       }
     );
-    return response.data?.content.lstCumRap;
+    return response.data?.content[0].lstCumRap;
   } catch (error) {
     throw error.response.data?.content.lstCumRap;
   }

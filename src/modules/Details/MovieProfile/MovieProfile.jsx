@@ -2,6 +2,9 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Container, Grid, Paper, Rating, Typography } from "@mui/material";
 import { getMovieProfile } from "../../../apis/cinemaAPI";
+import dayjs from "dayjs";
+import "./styles.css";
+import { Profile } from "./styles";
 
 export default function MovieProfile({ movieId }) {
   const { data = [], isLoading } = useQuery({
@@ -13,24 +16,33 @@ export default function MovieProfile({ movieId }) {
   console.log(movieProfile);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md">
       {movieProfile.map((item) => {
         return (
-          <Grid container>
-            <Grid item xs={4}>
+          <Profile container className="profile">
+            <Profile item xs={12} sm={6} md={4}>
               <img src={item.hinhAnh} alt="" width={250} height="100%" />
-            </Grid>
-            <Grid item xs={4}>
-              <h4>{item.ngayKhoiChieu}</h4>
-              <h3>{item.tenPhim}</h3>
-              <h5>120 phút</h5>
-              <button>Đặt vé</button>
-            </Grid>
-            <Grid item xs={4}>
-              <Typography component="legend">Đánh giá</Typography>
-              <Rating name="read-only" value={item.danhGia} readOnly />
-            </Grid>
-          </Grid>
+            </Profile>
+            <Profile item xs={12} sm={6} md={4} className="detail">
+              <div>
+                <h4>{dayjs(item.ngayKhoiChieu).format("DD-MM-YYYY")}</h4>
+                <h2>{item.tenPhim}</h2>
+                <h5>120 phút</h5>
+                <button className="button-book">Đặt vé</button>
+              </div>
+            </Profile>
+            <Profile item xs={12} sm={6} md={4} className="rating">
+              <Typography component="legend" color={"lightgray"}>
+                Đánh giá
+              </Typography>
+              <Rating
+                color="red"
+                name="read-only"
+                value={item.danhGia}
+                readOnly
+              />
+            </Profile>
+          </Profile>
         );
       })}
     </Container>

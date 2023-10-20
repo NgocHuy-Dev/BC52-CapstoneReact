@@ -42,11 +42,11 @@ export default function Showing() {
 
   const navigate = useNavigate();
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md" id="showing">
       <Grid container spacing={3}>
         {pageItem.map((movie) => {
           return (
-            <Grid item xs={3} key={movie.maPhim}>
+            <Grid item xs={4} key={movie.maPhim}>
               <Card className="card" sx={{ maxWidth: 345 }}>
                 <Modal
                   open={open}
@@ -90,21 +90,27 @@ export default function Showing() {
                     variant="body2"
                     color="text.secondary"
                   >
-                    {movie.moTa}
+                    {movie.moTa.slice(0, 70) + "..."}
                   </Typography>
                 </CardContent>
               </Card>
             </Grid>
           );
         })}
-        <div>
-          <Pagination
-            count={data.totalPages}
-            page={page}
-            onChange={handleChange}
-          />
-        </div>
       </Grid>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          paddingTop: "10px",
+        }}
+      >
+        <Pagination
+          count={data.totalPages}
+          page={page}
+          onChange={handleChange}
+        />
+      </div>
     </Container>
   );
 }

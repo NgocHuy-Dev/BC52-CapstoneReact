@@ -2,8 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { getMovieShowtimes } from "../../../apis/cinemaAPI";
-import { Container, Grid, Tab, Tabs } from "@mui/material";
+import { Container, Grid, Paper, Tab, Tabs, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import "./styles.css";
 
 export default function Showtimes({ movieId }) {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ export default function Showtimes({ movieId }) {
   }, [cinemaSystems]);
 
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="md" className="showtimes">
       <Grid container rowSpacing={1}>
         <Grid item xs={2}>
           {cinemaSystems.map((cinemaSystem) => {
@@ -72,25 +73,28 @@ export default function Showtimes({ movieId }) {
           {/* Render danh sách rạp */}
           {cinemas.map((cinema) => {
             return (
-              <div key={cinema.maCumRap}>
-                <h3>{cinema.tenCumRap}</h3>
-                {/* Render lịch chiếu */}
-                {cinema.lichChieuPhim.map((showtime) => {
-                  const time = dayjs(showtime.ngayChieuGioChieu).format(
-                    "DD-MM-YYYY ~ HH:mm"
-                  );
+              <Paper key={cinema.maCumRap} className="cinema-list">
+                <Box>
+                  <h3>{cinema.tenCumRap}</h3>
+                  {/* Render lịch chiếu */}
+                  {cinema.lichChieuPhim.map((showtime) => {
+                    const time = dayjs(showtime.ngayChieuGioChieu).format(
+                      "DD-MM-YYYY ~ HH:mm"
+                    );
 
-                  return (
-                    <button
-                      onClick={() =>
-                        navigate(`/tickets/${showtime.maLichChieu}`)
-                      }
-                    >
-                      {time}
-                    </button>
-                  );
-                })}
-              </div>
+                    return (
+                      <button
+                        className="button-time"
+                        onClick={() =>
+                          navigate(`/tickets/${showtime.maLichChieu}`)
+                        }
+                      >
+                        {time}
+                      </button>
+                    );
+                  })}
+                </Box>
+              </Paper>
             );
           })}
         </Grid>
