@@ -1,0 +1,37 @@
+h2,
+h4,
+h5 {
+    color: white;
+}
+
+.button-book {
+    --bg: #e32525;
+    --text-color: #fff;
+    position: relative;
+    width: 100px;
+    border: none;
+    background: var(--bg);
+    color: var(--text-color);
+    padding: 1em;
+    font-weight: bold;
+    font-size: medium;
+    transition: 0.2s;
+    border-radius: 5px;
+    opacity: 0.8;
+    letter-spacing: 1px;
+    box-shadow: #c0392b 0px 7px 2px, #000 0px 8px 5px;
+}
+
+.button-book:hover {
+    opacity: 1;
+}
+
+.button-book:active {
+    top: 4px;
+    box-shadow: #c0392b 0px 3px 2px, #000 0px 3px 5px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+}

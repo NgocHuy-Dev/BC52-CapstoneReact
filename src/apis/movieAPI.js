@@ -28,7 +28,7 @@ export async function getPagesItem(page) {
       params: {
         maNhom: "GP01",
         soTrang: page,
-        soPhanTuTrenTrang: "8",
+        soPhanTuTrenTrang: "6",
       },
     });
     return response.data?.content;

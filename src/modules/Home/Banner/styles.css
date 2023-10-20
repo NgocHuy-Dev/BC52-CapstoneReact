@@ -1,14 +1,18 @@
 .banner {
     position: relative;
+
 }
 
 .banner-overlay {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    left: 2%;
+    width: 80%;
+    height: 80%;
+    transform: translate(10%, 10%);
     z-index: 99;
+
+    margin-left: 30px;
 }
 
 .play-trailer-icon {
@@ -16,6 +20,11 @@
     top: 40%;
     right: 10%;
     cursor: pointer;
+}
+
+.play-trailer-icon:hover {
+    color: rgb(186, 186, 186);
+    transition: 0.5s;
 }
 
 .carouselItem {
@@ -47,5 +56,5 @@
     /* bgcolor: background.paper; */
     border: 2px solid #000;
     box-Shadow: 24;
-    padding: 4;
+
 }

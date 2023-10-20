@@ -1,12 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   getCinemaLogo,
   getCinemaShowtimes,
   getCinemaSystem,
 } from "../../../apis/cinemaAPI";
 import { Grid, Container, Tab, Tabs, Box, Paper } from "@mui/material";
+
+import CinemaLogo from "./CinemaLogo/CinemaLogo";
+import CinemaSystems from "./CinemaSystem.jsx/CinemaSystems";
 import CinemaShowtimes from "./CinemaShowtimes";
+import { CinemaPaper } from "./styles";
 
 export default function Cinema() {
   // =========== tab
@@ -14,95 +18,85 @@ export default function Cinema() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   // =====
-  //=============== logo
-
-  const { data = [], isLoading } = useQuery({
-    queryKey: ["cinema"],
-    queryFn: getCinemaLogo,
-  });
-
-  // =============
-  // ===== cụm rạp
+  //=== LẤY MÃ HỆ THỐNG RẠP
 
   const [cinemaCode, setCinemaCode] = useState("BHDStar");
   const handleChangeCinemaSystem = (value) => {
-    // alert(value);
     setCinemaCode(value);
-    console.log("setcinema:", cinemaCode);
   };
-
-  // lấy danh sách cụm rạp theo mã hệ thống rạp
+  // ====== gọi API lấy danh sách rạp theo mã hệ thống rạp
   const { data: cinemaSystem = [] } = useQuery({
     queryKey: ["cinemaCode", cinemaCode],
     queryFn: () => getCinemaSystem(cinemaCode),
+    enabled: !!cinemaCode,
   });
-  console.log("cinemaSystemmmmmm:", cinemaSystem);
+  useEffect(() => {
+    if (cinemaSystem.length > 0) {
+      setCinemaId(cinemaSystem[0]?.maCumRap);
+    }
+  }, [cinemaSystem]);
 
-  //================ lịch chiếu của cụm rạp
+  // lấy mã cụm rạp để render lịch chiếu theo mã cụm rạp
   const [cinemaId, setCinemaId] = useState("");
-  // const handleChangeCinemaId = (value) => {
-  //   setCinemaId(value);
-  // };
-  // const { data: cinemaShowtimes } = useQuery({
-  //   queryKey: ["cinemaCode", cinemaId],
-  //   queryFn: () => getCinemaShowtimes(cinemaId),
-  // });
-  // console.log("cinemaId", cinemaShowtimes);
-  //=======
+  const handleChangeCinema = (value) => {
+    setCinemaId(value);
+  };
 
+  //  lấy lịch chiếu
+  const { data: systemShowtimes } = useQuery({
+    queryKey: ["cinemaCode", cinemaCode],
+    queryFn: () => getCinemaShowtimes(cinemaCode),
+    enabled: !!cinemaCode,
+  });
+
+  // console.log("SHOWTIMEs", systemShowtimes);
+  // const systemShowtime =
+  //   systemShowtimes?.map((cinemas) => {
+  //     return cinemas.lstCumRap.filter((cinema) => {
+  //       return cinema.maCumRap === cinemaId;
+  //     });
+  //   }) || [];
+
+  // const listMovies = systemShowtime?.map((cinema) => {
+  //   return cinema.map((listMovie) => {
+  //     return listMovie.danhSachPhim.filter((movie) => {
+  //       return movie.dangChieu === true;
+  //     });
+  //   });
+  // });
   // ===========================================
   return (
-    <Container maxWidth="lg">
-      <Grid container rowSpacing={1}>
-        <Grid item xs={2}>
-          {/* render icon rap */}
-          {data.map((item) => {
-            return (
-              <Box key={item.maHeThongRap}>
-                <Tabs
-                  orientation="vertical"
-                  variant="scrollable"
-                  value={value}
-                  onChange={handleChange}
-                  aria-label="Vertical tabs example"
-                  sx={{ borderRight: 1, borderColor: "divider" }}
-                >
-                  <Tab
-                    label={
-                      <img
-                        src={item.logo}
-                        alt=""
-                        height={50}
-                        width={50}
-                        onClick={() =>
-                          handleChangeCinemaSystem(item.maHeThongRap)
-                        }
-                      />
-                    }
-                  />
-                </Tabs>
-              </Box>
-            );
-          })}
+    <Container maxWidth="md" id="cinema" sx={{ marginTop: 5 }}>
+      <CinemaPaper>
+        <Grid container rowSpacing={1}>
+          {/* ==== LOGO ==== */}
+          <Grid item xs={2}>
+            <CinemaLogo handleChangeCinemaSystem={handleChangeCinemaSystem} />
+          </Grid>
+          {/* ==== LOGO ==== */}
+          <Grid item xs={5}>
+            {/* Render danh sách rạp - lượt phim */}
+            <Tabs
+              orientation="vertical"
+              variant="scrollable"
+              value={value}
+              onChange={handleChange}
+              aria-label="Vertical tabs example"
+              sx={{ borderRight: 1, borderColor: "divider" }}
+            >
+              <CinemaSystems
+                cinemaSystem={cinemaSystem}
+                handleChangeCinema={handleChangeCinema}
+              />
+            </Tabs>
+          </Grid>
+          <Grid item xs={5}>
+            <CinemaShowtimes />
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          {/* Render danh sách rạp */}
-          {cinemaSystem.map((item) => {
-            return (
-              <div key={item.maHeThongRap}>
-                <Box>
-                  <h3>{item.tenCumRap}</h3>
-                  <a>{item.diaChi}</a>
-                </Box>
-              </div>
-            );
-          })}
-        </Grid>
-        <Grid item xs={4}>
-          <CinemaShowtimes cinemaId={cinemaId} />
-        </Grid>
-      </Grid>
+      </CinemaPaper>
     </Container>
   );
   //==================

@@ -1,11 +1,17 @@
 import React from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useUserContext } from "../../../contexts/UserContext/UserContext";
 
-export default function ProtectedRoute(children) {
+export default function ProtectedRoute({ children }) {
   const { currentUser } = useUserContext();
-  if (currentUser) {
-    return <Navigate to="/sign-in" />;
+
+  const location = useLocation();
+  console.log(location);
+
+  if (!currentUser) {
+    // user chưa đăng nhập ==> redirect về trang sign-in
+    const url = `sign-in?redirectTo=${location.pathname}`;
+    return <Navigate to={url} replace />;
   }
   return children || <Outlet />;
 }

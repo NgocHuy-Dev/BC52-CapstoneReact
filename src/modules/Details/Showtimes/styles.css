@@ -1,0 +1,35 @@
+.showtimes {
+    background-color: white;
+    margin-top: 50px;
+}
+
+h3 {
+    color: #9AC34A;
+}
+
+.button-time {
+    background-color: #FAFAFA;
+    color: #00AC4D;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px;
+    border: 1px solid gray;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.button-time:hover {
+    background-color: #FB4226;
+    color: white;
+    transition: 0.5s;
+}
+
+.cinema-list {
+    margin: 5px;
+    padding: 10px;
+
+}
+
+.cinema-list button {
+    border-radius: 5px;
+}

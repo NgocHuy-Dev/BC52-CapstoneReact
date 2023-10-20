@@ -1,10 +1,10 @@
-// import { configureStore } from "@reduxjs/toolkit";
-// import movieReducer from "./rexdux/reducers/showingReducer";
+import { configureStore } from "@reduxjs/toolkit";
+import movieTicketReducer from "./redux/slices/movieTicketSlice";
 
-// const store = configureStore({
-//   reducer: {
-//     movie: movieReducer,
-//   },
-// });
+const store = configureStore({
+  reducer: {
+    movieTicket: movieTicketReducer,
+  },
+});
 
-// export default store;
+export default store;

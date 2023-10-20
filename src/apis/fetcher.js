@@ -9,4 +9,28 @@ const fetcher = axios.create({
   },
 });
 
+//REquest interceptor
+fetcher.interceptors.request.use((request) => {
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  if (user) {
+    request.headers.Authorization = `Bearel ${user.accessToken}`;
+  }
+  return request;
+});
+
+// Response
+fetcher.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    // Kiểm tra trả lỗi 401 => token ko hợp lệ => đĂNG xuất
+    if (error.response.status === 401) {
+      localStorage.removeItem("currentUser");
+      window.location.replace("/sign-in");
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default fetcher;

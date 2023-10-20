@@ -9,6 +9,7 @@ import MainLayout from "./layouts/MainLayout";
 import UserProvider from "./contexts/UserContext/UserContext";
 import ProtedtedRoute from "./routers/ProtectedRoute/ProtedtedRoute";
 import AdminMovie from "./modules/AdminMovie";
+import TicketPage from "./modules/TicketPage";
 
 function App() {
   return (
@@ -20,10 +21,7 @@ function App() {
             <Route path="movies/:movieId" element={<Details />} />
 
             <Route element={<ProtedtedRoute />}>
-              <Route
-                path="tickets/:showtimeId"
-                element={<div>Ticket Page</div>}
-              />
+              <Route path="tickets/:showtimeId" element={<TicketPage />} />
             </Route>
 
             <Route path="/sign-in" element={<Signin />} />
@@ -34,8 +32,8 @@ function App() {
           {/* <Route element={<AdminProtectedRoute />}> */}
           <Route path="/admin">
             <Route path="movies" element={<AdminMovie />} />
-            {/* <Route path="users" element={<AdminUser />} /> */}
-            {/* <Route path="tickets" element={<AdminTicket />} /> */}
+            {/* <Route path="users" element={<AdminUser />} />
+            <Route path="tickets" element={<AdminTicket />} /> */}
           </Route>
           {/* </Route> */}
 

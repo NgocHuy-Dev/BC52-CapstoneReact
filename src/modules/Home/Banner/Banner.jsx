@@ -22,18 +22,12 @@ export default function Banner() {
     queryFn: getBanners,
   });
 
-  if (isLoading) {
-    // return <Loading />f
-    return <h1>Loading...</h1>;
-  }
-
-  // const [activeStep, setActiveStep] = useState(0);
   return (
     <div className="banner">
-      <Carousel>
+      <Carousel interval={3000}>
         {banners.map((item) => (
           <>
-            <Paper className="carouselItem" key={item.maBanner}>
+            <Paper key={item.maBanner} className="carouselItem">
               <img src={item.hinhAnh} className="carouselImage" />
             </Paper>
             <Modal
@@ -59,27 +53,6 @@ export default function Banner() {
           sx={{ fontSize: 100, color: grey[50] }}
         />
       </div>
-
-      {/* <div className={classes.buttonContainer}>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={handleBack}
-          disabled={activeStep === 0}
-          className={classes.button}
-        >
-          Back
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={handleNext}
-          disabled={activeStep === carouselItems.length - 1}
-          className={classes.button}
-        >
-          Next
-        </Button>
-      </div> */}
     </div>
   );
 }
