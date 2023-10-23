@@ -1,1 +1,9 @@
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA1MiIsIkhldEhhblN0cmluZyI6IjI4LzAyLzIwMjQiLCJIZXRIYW5UaW1lIjoiMTcwOTA3ODQwMDAwMCIsIm5iZiI6MTY4MTE0NjAwMCwiZXhwIjoxNzA5MjI2MDAwfQ.GboZ7OZlrOvJ_T6lEZ9PfGJD8vygDn30BxaLgB43WbM
+Nhóm 15: Hồ Ngọc Huy -Trần Mạnh Cường
+
+Tài khoản admin: createadmin1
+password: 123456
+
+link Deploy: https://bc-52-capstone-react.vercel.app/
+
+Phân chia công việc:
+https://docs.google.com/spreadsheets/d/1dHXitPyniuEAsR9iYT8uSRiKnjErsXoU/edit?usp=sharing&ouid=102161914820351222211&rtpof=true&sd=true

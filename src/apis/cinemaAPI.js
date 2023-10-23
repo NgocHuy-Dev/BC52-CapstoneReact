@@ -73,8 +73,8 @@ export async function getCinemaShowtimes(cinemaId) {
         },
       }
     );
-    return response.data?.content[0].lstCumRap;
+    return response.data?.content;
   } catch (error) {
-    throw error.response.data?.content.lstCumRap;
+    throw error.response.data?.content;
   }
 }
