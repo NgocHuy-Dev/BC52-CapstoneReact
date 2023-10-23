@@ -1,103 +1,211 @@
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import React, { useState, useEffect } from "react";
 import {
   getCinemaLogo,
-  getCinemaShowtimes,
   getCinemaSystem,
+  getCinemaShowtimes,
 } from "../../../apis/cinemaAPI";
-import { Grid, Container, Tab, Tabs, Box, Paper } from "@mui/material";
-
-import CinemaLogo from "./CinemaLogo/CinemaLogo";
-import CinemaSystems from "./CinemaSystem.jsx/CinemaSystems";
-import CinemaShowtimes from "./CinemaShowtimes";
-import { CinemaPaper } from "./styles";
+import { CusTabPanel, a11yProps } from "../../../CustomTabPanel";
+import dayjs from "dayjs";
+import style from "./Cinema.module.scss";
+import { Avatar, Container, Tab, Tabs, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function Cinema() {
-  // =========== tab
-  const [value, setValue] = useState(0);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const navigate = useNavigate();
+  const [cinemasId, setCinemasId] = useState([]);
+  const [cinemaId, setCinemaId] = useState([]);
 
-  // =====
-  //=== LẤY MÃ HỆ THỐNG RẠP
-
-  const [cinemaCode, setCinemaCode] = useState("BHDStar");
-  const handleChangeCinemaSystem = (value) => {
-    setCinemaCode(value);
-  };
-  // ====== gọi API lấy danh sách rạp theo mã hệ thống rạp
-  const { data: cinemaSystem = [] } = useQuery({
-    queryKey: ["cinemaCode", cinemaCode],
-    queryFn: () => getCinemaSystem(cinemaCode),
-    enabled: !!cinemaCode,
+  const { data = [] } = useQuery({
+    queryKey: ["cinemaSystems"],
+    queryFn: getCinemaLogo,
   });
+
+  const { data: cinemaSystem = [] } = useQuery({
+    queryKey: ["cinemaSystem", cinemasId],
+    queryFn: () => getCinemaSystem(cinemasId),
+    enabled: !!cinemasId,
+  });
+
+  const { data: cinemaShowtimes } = useQuery({
+    queryKey: ["cinemaShowtimes", cinemasId],
+    queryFn: () => getCinemaShowtimes(cinemasId),
+    enabled: !!cinemasId,
+  });
+
+  const cinemaShowtime =
+    cinemaShowtimes?.map((cinemas) => {
+      return cinemas.lstCumRap.filter((cinema) => {
+        return cinema.maCumRap === cinemaId;
+      });
+    }) || [];
+
+  useEffect(() => {
+    if (data.length > 0) {
+      setCinemasId(data[0].maHeThongRap);
+    }
+  }, [data]);
+
   useEffect(() => {
     if (cinemaSystem.length > 0) {
       setCinemaId(cinemaSystem[0]?.maCumRap);
     }
   }, [cinemaSystem]);
 
-  // lấy mã cụm rạp để render lịch chiếu theo mã cụm rạp
-  const [cinemaId, setCinemaId] = useState("");
-  const handleChangeCinema = (value) => {
-    setCinemaId(value);
-  };
-
-  //  lấy lịch chiếu
-  const { data: systemShowtimes } = useQuery({
-    queryKey: ["cinemaCode", cinemaCode],
-    queryFn: () => getCinemaShowtimes(cinemaCode),
-    enabled: !!cinemaCode,
+  const listMovies = cinemaShowtime?.map((cinema) => {
+    return cinema.map((listMovie) => {
+      return listMovie.danhSachPhim.filter((movie) => {
+        return movie.dangChieu === true;
+      });
+    });
   });
 
-  // console.log("SHOWTIMEs", systemShowtimes);
-  // const systemShowtime =
-  //   systemShowtimes?.map((cinemas) => {
-  //     return cinemas.lstCumRap.filter((cinema) => {
-  //       return cinema.maCumRap === cinemaId;
-  //     });
-  //   }) || [];
+  const handleSeclectCinemas = (id) => {
+    setCinemasId(id);
+  };
+  const handleSeclectCinema = (id) => {
+    setCinemaId(id);
+  };
 
-  // const listMovies = systemShowtime?.map((cinema) => {
-  //   return cinema.map((listMovie) => {
-  //     return listMovie.danhSachPhim.filter((movie) => {
-  //       return movie.dangChieu === true;
-  //     });
-  //   });
-  // });
-  // ===========================================
+  const [value, setValue] = useState(0);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const [value2, setValue2] = useState(0);
+  const handleChange2 = (event, newValue) => {
+    setValue2(newValue);
+  };
+
   return (
-    <Container maxWidth="md" id="cinema" sx={{ marginTop: 5 }}>
-      <CinemaPaper>
-        <Grid container rowSpacing={1}>
-          {/* ==== LOGO ==== */}
-          <Grid item xs={2}>
-            <CinemaLogo handleChangeCinemaSystem={handleChangeCinemaSystem} />
-          </Grid>
-          {/* ==== LOGO ==== */}
-          <Grid item xs={5}>
-            {/* Render danh sách rạp - lượt phim */}
-            <Tabs
-              orientation="vertical"
-              variant="scrollable"
-              value={value}
-              onChange={handleChange}
-              aria-label="Vertical tabs example"
-              sx={{ borderRight: 1, borderColor: "divider" }}
-            >
-              <CinemaSystems
-                cinemaSystem={cinemaSystem}
-                handleChangeCinema={handleChangeCinema}
+    <div>
+      <Container className={style.container} id="1"></Container>
+      <Container className={style.cinemaContainer} maxWidth="md">
+        <Tabs
+          orientation="vertical"
+          textColor="inherit"
+          className={style.tabs}
+          onChange={handleChange}
+          value={value}
+        >
+          {data.map((cinema, index) => {
+            return (
+              <Tab
+                type="button"
+                {...a11yProps({ index })}
+                onClick={() => {
+                  handleSeclectCinemas(cinema.maHeThongRap);
+                }}
+                label={
+                  <Avatar
+                    variant="circle"
+                    style={{ backgroundColor: "transparent" }}
+                  >
+                    <img src={cinema.logo} alt="" className={style.logo} />
+                  </Avatar>
+                }
               />
-            </Tabs>
-          </Grid>
-          <Grid item xs={5}>
-            <CinemaShowtimes />
-          </Grid>
-        </Grid>
-      </CinemaPaper>
-    </Container>
+            );
+          })}
+        </Tabs>
+        {data.map((cinema, index) => {
+          return (
+            <CusTabPanel
+              index={index}
+              value={value}
+              className={style.panel}
+              onClick={() => {
+                handleSeclectCinemas(cinema.maHeThongRap);
+              }}
+            ></CusTabPanel>
+          );
+        })}
+        <Tabs
+          orientation="vertical"
+          className={style.tabs2}
+          textColor="inherit"
+          onChange={handleChange2}
+          value={value2}
+        >
+          {cinemaSystem.map((cinema) => {
+            return (
+              <Tab
+                label={
+                  <div
+                    style={{ width: "100%" }}
+                    type="button"
+                    className={style.tab}
+                    onClick={() => {
+                      handleSeclectCinema(cinema.maCumRap);
+                    }}
+                  >
+                    <Typography component="h4" className={style.cinemaName}>
+                      {cinema.tenCumRap}
+                    </Typography>
+                    <Typography component="h6" className={style.address}>
+                      {cinema.diaChi}
+                    </Typography>
+                    <a className={style.detail}>[chi tiết]</a>
+                  </div>
+                }
+              />
+            );
+          })}
+        </Tabs>
+        <div className={style.showtimes}>
+          {listMovies?.map((movies) => {
+            return movies.map((movie) => {
+              return movie.map((item) => {
+                return (
+                  <div className={style.showtime}>
+                    <div style={{ width: "120px" }}>
+                      <img
+                        src={item.hinhAnh}
+                        alt=""
+                        width="100%"
+                        height="100px"
+                      />
+                    </div>
+                    <div className={style.showtimeList}>
+                      <Typography component="h2" className={style.movieName}>
+                        <span className={style.c18}>C18</span>
+                        {item.tenPhim}
+                      </Typography>
+                      <div className={style.cinameButton}>
+                        {item.lstLichChieuTheoPhim?.map((showtime) => {
+                          return (
+                            <a
+                              className={style.cinemaTime}
+                              onClick={() =>
+                                navigate(`/tickets/${showtime.maLichChieu}`)
+                              }
+                            >
+                              <Typography className={style.day}>
+                                {dayjs(showtime.ngayChieuGioChieu).format(
+                                  "DD-MM-YYYY"
+                                )}
+                              </Typography>
+                              <Typography> - </Typography>
+                              <Typography
+                                component="h3"
+                                sx={{ color: "#fa5238" }}
+                              >
+                                {dayjs(showtime.ngayChieuGioChieu).format(
+                                  "HH:mm"
+                                )}{" "}
+                              </Typography>
+                            </a>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                );
+              });
+            });
+          })}
+        </div>
+      </Container>
+    </div>
   );
-  //==================
 }

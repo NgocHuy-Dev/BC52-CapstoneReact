@@ -8,8 +8,7 @@ import { grey } from "@mui/material/colors";
 
 import "./styles.css";
 import ReactPlayer from "react-player";
-// import classes from "./styles.module.scss";
-// import { makeStyles } from "@mui/styles";
+import Loading from "../../../components/Loading";
 
 export default function Banner() {
   //==== Modal ===
@@ -21,6 +20,8 @@ export default function Banner() {
     queryKey: ["banners"],
     queryFn: getBanners,
   });
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="banner">

@@ -26,6 +26,8 @@ export default function Seat({ seat, isSelected }) {
     status = Object.assign({}, status, { backgroundColor: "#008000" });
   } else if (seat.loaiGhe === "Vip") {
     status = Object.assign({}, status, { backgroundColor: "#ffa600" });
+  } else if (seat.daDat === true) {
+    status = Object.assign({}, status, "disabled");
   }
 
   // ================

@@ -1,44 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { addTicket } from "../../../apis/ticketAPI";
 import { resetSeat } from "../../../redux/slices/movieTicketSlice";
+import Swal from "sweetalert2";
 
-import { Typography, Box, Button, Modal, Paper } from "@mui/material";
-import { TicketInfo, Text, ButtonBook } from "./styles";
+import { Typography, Modal, Paper } from "@mui/material";
+import { TicketInfo, Text, ButtonBook, BoxTickets, ModalDes } from "./styles";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 export default function Tickets({ data }) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => setOpen(false);
-
-  const { selectedSeats } = useSelector((state) => {
-    return state.movieTicket;
-  });
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
-  if (selectedSeats) {
-  }
-  const { totalPrice } = useSelector((state) => {
+  const [dataTicket, setDataTicket] = useState({});
+  let { selectedSeats, totalPrice } = useSelector((state) => {
     return state.movieTicket;
   });
+  const { mutate: handleBuy } = useMutation({
+    mutationFn: () => addTicket(dataTicket),
 
-  console.log("ticket data:", data);
-  const handleBook = () => {
-    dispatch(resetSeat());
+    onSuccess: () => {
+      Swal.fire(
+        "Bạn đã dặt vé thành công!",
+        "Kiểm tra trong lịch sử đặt vé",
+        "success"
+      );
+      dispatch(resetSeat());
+      queryClient.invalidateQueries({ queryKey: ["seatItem"] });
+    },
+  });
 
-    handleOpen();
+  const handleSwal = () => {
+    if (selectedSeats.length <= 0) {
+      Swal.fire({
+        icon: "error",
+        title: "Chưa có ghế nào được chọn!",
+        text: "Vui lòng chọn ghế!",
+      });
+      return;
+    }
+    // lỗi từ API nên ko gọi
+    //   setDataTicket({
+    //     "maLichChieu": data?.thongTinPhim.maLichChieu,
+    //     "danhSachVe": selectedSeats.map((seat) => {
+    //         return ({
+    //             "maGhe": seat.maGhe,
+    //             "giaVe": seat.giaVe
+    //         })
+    //     })
+    // });
+    handleBuy();
   };
 
   return (
@@ -108,28 +119,9 @@ export default function Tickets({ data }) {
               </h5>
             </Text>
           </TicketInfo>
-          {selectedSeats.map((item) => {})}
         </div>
-        <ButtonBook onClick={handleBook}>Đặt vé</ButtonBook>
+        <ButtonBook onClick={handleSwal}>Đặt vé</ButtonBook>
       </Paper>
-      {/* // ===== Modal */}
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-          ></Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Đặt vé thành công
-          </Typography>
-        </Box>
-      </Modal>
     </>
   );
 }

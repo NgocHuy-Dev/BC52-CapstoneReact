@@ -18,6 +18,7 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { grey, red } from "@mui/material/colors";
 import "./styles.css";
 import ReactPlayer from "react-player";
+import Loading from "../../../components/Loading";
 
 export default function Showing() {
   //==== Modal ===
@@ -26,27 +27,25 @@ export default function Showing() {
   const handleClose = () => setOpen(false);
   //==== Modal ===
 
-  const [page, setPage] = useState(1);
-  const handleChange = (event, value) => {
-    setPage(value);
-  };
-
   const { data = [], isLoading } = useQuery({
     queryKey: ["page", page],
     queryFn: () => getPagesItem(page),
   });
 
+  const [page, setPage] = useState(1);
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+
   // console.log("data", data);
   const pageItem = data?.items || [];
-  console.log("pageItem", pageItem);
-
   const navigate = useNavigate();
   return (
     <Container maxWidth="md" id="showing">
       <Grid container spacing={3}>
         {pageItem.map((movie) => {
           return (
-            <Grid item xs={4} key={movie.maPhim}>
+            <Grid item xs={12} sm={6} md={4} key={movie.maPhim}>
               <Card className="card" sx={{ maxWidth: 345 }}>
                 <Modal
                   open={open}
@@ -102,7 +101,7 @@ export default function Showing() {
         style={{
           display: "flex",
           justifyContent: "space-evenly",
-          paddingTop: "10px",
+          paddingTop: "30px",
         }}
       >
         <Pagination

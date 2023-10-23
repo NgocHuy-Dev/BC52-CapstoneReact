@@ -22,3 +22,19 @@ export const ButtonBook = styled(Button)`
     background-color: green;
   }
 `;
+
+export const BoxTickets = styled(Box)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background-color: #ffffff;
+  border: 2px solid #000;
+  box-shadow: 24px;
+`;
+
+export const ModalDes = styled(Typography)`
+  font-size: 35px;
+  padding: 15px 20px;
+`;
