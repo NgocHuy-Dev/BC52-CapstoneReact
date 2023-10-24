@@ -9,22 +9,24 @@ const fetcher = axios.create({
   },
 });
 
-//REquest interceptor
 fetcher.interceptors.request.use((request) => {
+  //kiểm tra xem user đã đăng nhập hay chưa, để thêm token của user vào headers
   const user = JSON.parse(localStorage.getItem("currentUser"));
+
   if (user) {
-    request.headers.Authorization = `Bearel ${user.accessToken}`;
+    request.headers.Authorization = `Bearer ${user.accessToken}`;
   }
   return request;
 });
 
-// Response
 fetcher.interceptors.response.use(
   (response) => {
+    //thay đỏi respone trước khi trả về
+    //return response.data.content
     return response;
   },
   (error) => {
-    // Kiểm tra trả lỗi 401 => token ko hợp lệ => đĂNG xuất
+    //Kiểm tra nếu lỗi là 401 => token ko hợp lệ => đăng xuất user
     if (error.response.status === 401) {
       localStorage.removeItem("currentUser");
       window.location.replace("/sign-in");

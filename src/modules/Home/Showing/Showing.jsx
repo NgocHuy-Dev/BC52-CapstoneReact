@@ -27,16 +27,14 @@ export default function Showing() {
   const handleClose = () => setOpen(false);
   //==== Modal ===
 
-  const { data = [], isLoading } = useQuery({
-    queryKey: ["page", page],
-    queryFn: () => getPagesItem(page),
-  });
-
   const [page, setPage] = useState(1);
   const handleChange = (event, value) => {
     setPage(value);
   };
-
+  const { data = [], isLoading } = useQuery({
+    queryKey: ["page", page],
+    queryFn: () => getPagesItem(page),
+  });
   // console.log("data", data);
   const pageItem = data?.items || [];
   const navigate = useNavigate();

@@ -9,8 +9,9 @@ import Loading from "../../components/Loading";
 
 export default function TicketPage() {
   const { showtimeId } = useParams();
+
   const { data = [], isLoading } = useQuery({
-    queryKey: ["showtimeId", showtimeId],
+    queryKey: ["seatItem", showtimeId],
     queryFn: () => getTicketRoms(showtimeId),
   });
   if (isLoading) return <Loading />;
@@ -18,10 +19,10 @@ export default function TicketPage() {
   return (
     <Grid container sx={{ height: "100vh" }}>
       <Grid item xs={8}>
-        <SeatLists showtimeId={showtimeId} data={data?.danhSachGhe} />
+        <SeatLists data={data?.danhSachGhe} />
       </Grid>
       <Grid item xs={4}>
-        <Tickets showtimeId={showtimeId} data={data?.thongTinPhim} />
+        <Tickets data={data?.thongTinPhim} />
       </Grid>
     </Grid>
   );

@@ -6,6 +6,7 @@ import { Navigate, useSearchParams } from "react-router-dom";
 import { object, string } from "yup";
 import { signin } from "../../../../apis/userAPI";
 import { useUserContext } from "../../../../contexts/UserContext/UserContext";
+import Swal from "sweetalert2";
 
 import { Grid, Paper, Typography, TextField, Alert } from "@mui/material";
 import { CusAlert, CusBackGr, CusButton, CusImage, CusPaper } from "./styles";
@@ -51,6 +52,7 @@ export default function Signin() {
   });
 
   const onSubmit = (values) => {
+    Swal.fire("Đăng nhập thành công!", "", "success");
     handleSignin(values);
   };
 
