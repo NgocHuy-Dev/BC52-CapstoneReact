@@ -5,8 +5,8 @@ import { addTicket } from "../../../apis/ticketAPI";
 import { resetSeat } from "../../../redux/slices/movieTicketSlice";
 import Swal from "sweetalert2";
 
-import { Typography, Modal, Paper } from "@mui/material";
-import { TicketInfo, Text, ButtonBook, BoxTickets, ModalDes } from "./styles";
+import { Typography, Paper } from "@mui/material";
+import { TicketInfo, Text, ButtonBook } from "./styles";
 
 export default function Tickets({ data }) {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ export default function Tickets({ data }) {
 
     onSuccess: () => {
       Swal.fire(
-        "Bạn đã dặt vé thành công!",
+        "Đặt vé thành công!",
         "Kiểm tra trong lịch sử đặt vé",
         "success"
       );
@@ -34,21 +34,20 @@ export default function Tickets({ data }) {
     if (selectedSeats.length <= 0) {
       Swal.fire({
         icon: "error",
-        title: "Chưa có ghế nào được chọn!",
+        title: "Bạn chưa chọn ghế",
         text: "Vui lòng chọn ghế!",
       });
       return;
     }
-    // lỗi từ API nên ko gọi
-    //   setDataTicket({
-    //     "maLichChieu": data?.thongTinPhim.maLichChieu,
-    //     "danhSachVe": selectedSeats.map((seat) => {
-    //         return ({
-    //             "maGhe": seat.maGhe,
-    //             "giaVe": seat.giaVe
-    //         })
-    //     })
-    // });
+    setDataTicket({
+      maLichChieu: data?.maLichChieu,
+      danhSachVe: selectedSeats.map((seat) => {
+        return {
+          maGhe: seat.maGhe,
+          giaVe: seat.giaVe,
+        };
+      }),
+    });
     handleBuy();
   };
 
